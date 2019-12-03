@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import BodyComponent from './bodycomponent';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    ourText: '',
+    submitText: ''
+  }
+
+  // Submits text we have inputed.
+  handleSubmitText = (e) => {
+    e.preventDefault();
+    const { ourText } = this.state;
+    this.setState(prevState => ({
+      ...prevState,
+      submitText: ourText
+    }));
+  }
+
+  // Hahndling changes to set state for input
+  handleTextChanges = (e) => {
+    e.preventDefault();
+    const { value, name } = e.target;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  // Render the items
+  render() {
+    const { ourText, submitText } = this.state;
+    return (
+      <div className="App">
+        <header className="header">
+          <a href="/">Home</a>
+          <a href="/">About Us</a>
+          <a href="/">Contact Us</a>
+        </header>
+        <section className="adding">
+          <input
+            name="ourText"
+            value={ourText}
+            type="text"
+            placeholder="Add your text"
+            onChange={(e) => this.handleTextChanges(e)}
+          />
+          <button
+            onClick={(e) => this.handleSubmitText(e)}
+          >
+            Submit
+          </button>
+        </section>
+        <BodyComponent submitText={submitText} />
+      </div>
+    )
+  }
 }
 
 export default App;
